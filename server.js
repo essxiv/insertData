@@ -1,10 +1,9 @@
 const Hapi = require('hapi')
-const swagger = require('hapi-swagger')
 
 module.exports = function (config, store) {
-    const server = new Hapi.server()
+    const server = new Hapi.Server()
     const swagger = {
-        register: swagger,
+        register: require('hapi-swagger'),
         options: {
             info: {
                 title: 'Insert Data Documentation',
@@ -17,11 +16,6 @@ module.exports = function (config, store) {
         }
     }
 
-    server.connection({
-        host: config.host,
-        port: config.port
-    })
-
     var validate = function(decoded, request, callback) {
         store.session.get(decoded.id)
             .then(function(user) {
@@ -31,8 +25,12 @@ module.exports = function (config, store) {
                     callback(null, false)
                 }
             })
-
     }
+
+    server.connection({
+        host: config.host,
+        port: config.port
+    })
 
     server.register([
         require('hapi-auth-jwt2'),
@@ -56,4 +54,5 @@ module.exports = function (config, store) {
         server.route([
         ])
     })
+    return server
 }
