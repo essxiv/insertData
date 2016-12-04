@@ -1,6 +1,6 @@
 const convict = require('convict')
 
-const config = convict({
+const conf = convict({
     host: {
         doc: 'Server Host',
         format: String,
@@ -14,10 +14,16 @@ const config = convict({
         env: 'PORT'
     },
     dbName: {
+        doc: 'Database Name',
+        format: String,
+        default: 'insert_db',
+        env: 'DB_NAME',
+    },
+    dbHost: {
         doc: 'Database Host',
         format: String,
-        default: 'insertDB',
-        env: 'DB_NAME',
+        default: '127.0.0.1',
+        env: 'DB_HOST'
     },
     dbPort: {
         doc: 'Database Port',
@@ -28,16 +34,16 @@ const config = convict({
     dbUser: {
         doc: 'Database User',
         format: String,
-        default: 'dbUser',
+        default: 'insertUser',
         env: 'DB_USER'
     },
     dbPass: {
         doc: 'Database Password',
         format: String,
-        default: 'password',
+        default: 'P4ssw0rd!',
         env: 'DB_PASS'
     }
 })
 
-config.validate()
-module.exports = config.get()
+conf.validate()
+module.exports = conf.get()
